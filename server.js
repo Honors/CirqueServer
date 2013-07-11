@@ -8,11 +8,26 @@ var RespObject = function(obj, id, model) {
 	this._id = id;
 	this._model = model;
 };
-RespObject.prototype.save = function(cb) {
-	this._model[this._id] = this;
-	cb(this._model[this._id] != this)
+RespObject.prototype.clean = function() {
+	var copy = {};
+	for( var k in this ) {
+		if( k != '_id' && k != '_model' )
+			copy[k] = this[k];
+	}
+	return copy;
 };
-Array.prototype.find = function(criteria, cb) {
+var compare = function(a, b) {
+	var same = true;
+	for( var k in a ) {
+		if( a[k] != b[k] ) same = false;
+	}
+	return same;
+};
+RespObject.prototype.save = function(cb) {
+	this._model[this._id] = this.clean();
+	cb(!compare(this._model[this._id].clean(), this.clean()));
+};
+Array.prototype.find = function(criteria, cb, clean) {
 	var model = this;
 	var matches = this.filter(function(item) {
 		var matches = true;
@@ -25,7 +40,7 @@ Array.prototype.find = function(criteria, cb) {
 		}
 		return matches;
 	}).map(function(item, index) {
-		return new RespObject(item, index, model);
+		return clean?item:(new RespObject(item, index, model));
 	});
 	cb(!matches.length?"No matches.":null, matches);
 };
@@ -164,6 +179,27 @@ app.get({
 					}) + '\n');
 				});
 			});
+		});
+	}
+}).post({
+	path: /^\/api\/users\/locate/,
+	cb: function(req, res) {
+		// TODO: calculate nearness better than mere digit truncating.
+		readPost(req, function(location) {
+			var ll = location.split(','),
+				approx = ll.map(function(m){
+					var sides=m.split('.');
+					return [sides[0], sides[1][0]].join('\\.');
+				}).join('[0-9]*?,') + '[0-9]*?',
+				matcher = new RegExp(approx);
+			users.find({ location: matcher }, function(err, users) {
+				console.log(users);
+				res.end(JSON.stringify({
+					success: !err, 
+					error: err,
+					users: users
+				}) + '\n');
+			}, true);
 		});
 	}
 });
