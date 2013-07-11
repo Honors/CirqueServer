@@ -63,6 +63,13 @@ curl http://localhost:8080/api/users/locate \
 	-d "32.0,54.0"	
 ```
 
+##Locate Boards
+
+```sh
+curl http://localhost:8080/api/boards/locate \
+	-d "32.0,54.0"	
+```
+
 ##Invite Users
 
 ```sh

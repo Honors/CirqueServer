@@ -30,6 +30,9 @@ curl -s http://localhost:8080/api/users/123/location \
 curl -s http://localhost:8080/api/users/locate \
 	-d "32.0,54.0" | $assert "locate users"
 	
+curl -s http://localhost:8080/api/boards/locate \
+	-d "32.0,54.0" | $assert "locate boards"	
+	
 curl -s http://localhost:8080/api/boards/123/invite \
 	-d "{
 		\"from\": 123, \

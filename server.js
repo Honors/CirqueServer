@@ -194,11 +194,31 @@ app.get({
 				}).join('[0-9]*?,') + '[0-9]*?',
 				matcher = new RegExp(approx);
 			users.find({ location: matcher }, function(err, users) {
-				console.log(users);
 				res.end(JSON.stringify({
 					success: !err, 
 					error: err,
 					users: users
+				}) + '\n');
+			}, true);
+		});
+	}
+}).post({
+	path: /^\/api\/boards\/locate/,
+	cb: function(req, res) {
+		// TODO: calculate nearness better than mere digit truncating.
+		// ....: also, DRY.
+		readPost(req, function(location) {
+			var ll = location.split(','),
+				approx = ll.map(function(m){
+					var sides=m.split('.');
+					return [sides[0], sides[1][0]].join('\\.');
+				}).join('[0-9]*?,') + '[0-9]*?',
+				matcher = new RegExp(approx);
+			boards.find({ location: matcher }, function(err, boards) {
+				res.end(JSON.stringify({
+					success: !err, 
+					error: err,
+					boards: boards
 				}) + '\n');
 			}, true);
 		});
