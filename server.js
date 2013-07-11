@@ -51,7 +51,8 @@ Array.prototype.insert = function(obj, cb) {
 
 var boards = [{ user: 123, id: 123, location: "32.0,54.0" }],
 	users = [{ id: 123, name: "matt3141", location: "32.0,54.0" }],
-	posts = [{ id: 123, user: 123, board: 123 }];
+	posts = [{ id: 123, user: 123, board: 123 }],
+	invites = [{ from: 123, to: 123, message: "come!", board: 123 }];
 
 var readPost = function(req, cb) {
 	var buffer = [];
@@ -200,6 +201,21 @@ app.get({
 					users: users
 				}) + '\n');
 			}, true);
+		});
+	}
+}).post({
+	path: /^\/api\/boards\/[^\/]+\/invite/,
+	cb: function(req, res) {
+		var parts = req.url.substr(1).split('/'),
+			board = parts[2];
+		readJSON(req, function(invite) {
+			invite.board = board;
+			invites.insert(invite, function(err) {
+				res.end(JSON.stringify({
+					success: !err, 
+					error: err
+				}) + '\n');
+			});
 		});
 	}
 });
