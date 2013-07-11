@@ -36,3 +36,5 @@ curl -s http://localhost:8080/api/boards/123/invite \
 		\"to\": 123, \
 		\"message\": \"you should come!\" \
 	}" | $assert "invite users"
+	
+curl -s http://localhost:8080/api/users/123/invitations	| $assert "get invitations"

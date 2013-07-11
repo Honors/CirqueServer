@@ -73,3 +73,10 @@ curl http://localhost:8080/api/boards/{board_id}/invite \
 		\"message\": \"you should come!\" \
 	}"
 ```
+
+##Get User Invitations
+
+
+```sh
+curl http://localhost:8080/api/users/{user_id}/invitations
+```
