@@ -112,6 +112,19 @@ app.get({
 			});
 		});
 	}
+}).get({
+	path: /^\/api\/users\/[^\/]+\/location/,
+	cb: function(req, res) {
+		var parts = req.url.substr(1).split('/'),
+			user = parts[2];
+		users.find({ id: user }, function(err, users) {
+			res.end(JSON.stringify({
+				success: !err, 
+				error: err,
+				location: (users[0]||{}).location
+			}) + '\n');
+		});
+	}
 });
 
 http.createServer(app).listen(8080);
