@@ -4,7 +4,7 @@ curl -s http://localhost:8080/api/users/123/boards | $assert "boards for user"
 
 curl -s http://localhost:8080/api/boards/123 | $assert "board access"
 
-curl -s http://localhost:8080/api/boards/{board_id}/posts | $assert "posts"
+curl -s http://localhost:8080/api/boards/123/posts | $assert "posts"
 
 curl -s http://localhost:8080/api/boards \
 	-d "{

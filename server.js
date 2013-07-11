@@ -13,8 +13,8 @@ Array.prototype.find = function(criteria, cb) {
 };
 
 var boards = [{user: 123, id: 123}],
-	users = [],
-	posts = [];
+	users = [{ id: 123, name: "matt3141" }],
+	posts = [{ id: 123, user: 123, board: 123 }];
 
 app.get({
 	path: /^/,
@@ -55,6 +55,19 @@ app.get({
 				success: !err, 
 				error: err,
 				board: boards[0]
+			}) + '\n');
+		});
+	}
+}).get({
+	path: /^\/api\/boards\/[^\/]+\/posts/,
+	cb: function(req, res) {
+		var parts = req.url.substr(1).split('/'),
+			board = parts[2];
+		posts.find({ board: board }, function(err, posts) {
+			res.end(JSON.stringify({
+				success: !err, 
+				error: err,
+				posts: posts[0]
 			}) + '\n');
 		});
 	}
