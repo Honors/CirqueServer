@@ -43,6 +43,13 @@ curl http://localhost:8080/api/boards/{board_id}/posts \
 	}"	
 ```
 
+##Upload Media
+
+```sh
+curl http://localhost:8080/api/assets/{asset_id}.png \
+	-d @test-pic.png
+```
+
 ##Get User Location
 
 ```sh

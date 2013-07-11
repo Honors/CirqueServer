@@ -41,3 +41,6 @@ curl -s http://localhost:8080/api/boards/123/invite \
 	}" | $assert "invite users"
 	
 curl -s http://localhost:8080/api/users/123/invitations	| $assert "get invitations"
+
+curl -s http://localhost:8080/api/assets/test.txt \
+	-d @test.txt | $assert "upload asset"

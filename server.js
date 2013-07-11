@@ -1,5 +1,6 @@
 var app = require('./route'),
-	http = require('http');
+	http = require('http'),
+	fs = require('fs');
 
 var RespObject = function(obj, id, model) {
 	for( var k in obj ) {
@@ -53,6 +54,17 @@ var boards = [{ user: 123, id: 123, location: "32.0,54.0" }],
 	users = [{ id: 123, name: "matt3141", location: "32.0,54.0" }],
 	posts = [{ id: 123, user: 123, board: 123 }],
 	invites = [{ from: 123, to: 123, message: "come!", board: 123 }];
+
+var pipePost = function(req, file, cb) {
+	var write = fs.createWriteStream(__dirname + file, {'flags': 'w'});
+	req.on("data", function(chunk) {
+		write.write(chunk);
+	});
+	req.on("end", function() {
+		write.end();
+		cb(false);
+	});
+};
 
 var readPost = function(req, cb) {
 	var buffer = [];
@@ -250,6 +262,25 @@ app.get({
 				invites: invites
 			}) + '\n');
 		});
+	}
+}).post({
+	path: /^\/api\/assets\/[^\/]+/,
+	cb: function(req, res) {
+		var parts = req.url.substr(1).split('/'),
+			fname = parts[2];
+		if( !fname.match(/^[^\.]+\.[^\.]+$/) ) {
+			res.end(JSON.stringify({
+				success: false, 
+				error: "File name invalid."
+			}) + '\n');
+			return;
+		}
+		pipePost(req, '/assets/'+fname, function(err) {
+			res.end(JSON.stringify({
+				success: !err, 
+				error: err
+			}) + '\n');
+		});								
 	}
 });
 
