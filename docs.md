@@ -4,10 +4,16 @@
 ##Make Account
 
 
-##Get Boards
+##Get Boards for User
 
 ```sh
-	curl http://localhost:8080/api/boards/{user_id}
+	curl http://localhost:8080/api/users/{user_id}/boards
+```
+
+##Get a Given Board
+
+```sh
+	curl http://localhost:8080/api/boards/{board_id}
 ```
 
 ##Get Posts
