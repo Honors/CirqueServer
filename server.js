@@ -1,13 +1,27 @@
 var app = require('./route'),
 	http = require('http');
 
+var RespObject = function(obj, id, model) {
+	for( var k in obj ) {
+		this[k] = obj[k];
+	}
+	this._id = id;
+	this._model = model;
+};
+RespObject.prototype.save = function(cb) {
+	this._model[this._id] = this;
+	cb(this._model[this._id] != this)
+};
 Array.prototype.find = function(criteria, cb) {
-	var matches = this.filter(function(board) {
+	var model = this;
+	var matches = this.filter(function(item) {
 		var matches = true;
 		for( var k in criteria ) {
-			if( board[k] != criteria[k] ) matches = false;
+			if( item[k] != criteria[k] ) matches = false;
 		}
 		return matches;
+	}).map(function(item, index) {
+		return new RespObject(item, index, model);
 	});
 	cb(!matches.length?"No matches.":null, matches);
 };
@@ -20,13 +34,19 @@ var boards = [{ user: 123, id: 123, location: "32.0,54.0" }],
 	users = [{ id: 123, name: "matt3141", location: "32.0,54.0" }],
 	posts = [{ id: 123, user: 123, board: 123 }];
 
-var readJSON = function(req, cb) {
+var readPost = function(req, cb) {
 	var buffer = [];
 	req.on("data", function(chunk) {
 		buffer.push(chunk);
 	});
 	req.on("end", function() {
-		cb(JSON.parse(buffer.join("")));
+		cb(buffer.join(""));
+	});
+};
+
+var readJSON = function(req, cb) {
+	readPost(req, function(resp) {
+		cb(JSON.parse(resp));
 	});
 };
 
@@ -123,6 +143,23 @@ app.get({
 				error: err,
 				location: (users[0]||{}).location
 			}) + '\n');
+		});
+	}
+}).post({
+	path: /^\/api\/users\/[^\/]+\/location/,
+	cb: function(req, res) {
+		var parts = req.url.substr(1).split('/'),
+			user = parts[2];
+		readPost(req, function(location) {
+			users.find({ id: user }, function(err, users) {
+				users[0].location = location;
+				users[0].save(function(err) {
+					res.end(JSON.stringify({
+						success: !err, 
+						error: err					
+					}) + '\n');
+				});
+			});
 		});
 	}
 });
