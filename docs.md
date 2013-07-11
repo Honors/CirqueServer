@@ -64,3 +64,12 @@ curl http://localhost:8080/api/users/locate \
 ```
 
 ##Invite Users
+
+```sh
+curl http://localhost:8080/api/boards/{board_id}/invite \
+	-d "{
+		\"from\": 123, \
+		\"to\": 123, \
+		\"message\": \"you should come!\" \
+	}"
+```
