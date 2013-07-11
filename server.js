@@ -282,6 +282,23 @@ app.get({
 			}) + '\n');
 		});								
 	}
+}).get({
+	path: /^\/api\/assets\/[^\/]+/,
+	cb: function(req, res) {
+		var parts = req.url.substr(1).split('/'),
+			fname = parts[2],
+			path = __dirname + '/assets/' + fname;
+			
+		fs.stat(path, function(err) {
+			if( !err ) {
+				res.writeHead(200);
+				fs.createReadStream(path).pipe(res);
+			} else {
+				res.writeHead(404);
+				res.end();
+			}
+		});		
+	}
 });
 
 http.createServer(app).listen(8080);

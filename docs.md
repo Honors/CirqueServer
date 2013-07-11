@@ -50,6 +50,12 @@ curl http://localhost:8080/api/assets/{asset_id}.png \
 	-d @test-pic.png
 ```
 
+##Access Media
+
+```sh
+curl http://localhost:8080/api/assets/{asset_id}.png
+```
+
 ##Get User Location
 
 ```sh
