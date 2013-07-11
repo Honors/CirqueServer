@@ -11,10 +11,24 @@ Array.prototype.find = function(criteria, cb) {
 	});
 	cb(!matches.length?"No matches.":null, matches);
 };
+Array.prototype.insert = function(obj, cb) {
+	this.push(obj);
+	cb(this.indexOf(obj) == -1);
+};
 
 var boards = [{user: 123, id: 123}],
 	users = [{ id: 123, name: "matt3141" }],
 	posts = [{ id: 123, user: 123, board: 123 }];
+
+var readJSON = function(req, cb) {
+	var buffer = [];
+	req.on("data", function(chunk) {
+		buffer.push(chunk);
+	});
+	req.on("end", function() {
+		cb(JSON.parse(buffer.join("")));
+	});
+};
 
 app.get({
 	path: /^/,
@@ -69,6 +83,18 @@ app.get({
 				error: err,
 				posts: posts[0]
 			}) + '\n');
+		});
+	}
+}).post({
+	path: /^\/api\/boards/,
+	cb: function(req, res) {
+		readJSON(req, function(board) {
+			boards.insert(board, function(err) {
+				res.end(JSON.stringify({
+					success: !err, 
+					error: err
+				}) + '\n');
+			});
 		});
 	}
 });

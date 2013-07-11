@@ -11,7 +11,7 @@ curl -s http://localhost:8080/api/boards \
 		\"location\": \"32.0,54.0\", \
 		\"name\": \"Birthday\", \
 		\"private\": false, \
-		\"members\": [123, 456], \
+		\"members\": [123, 456] \
 	}" | $assert "create board"
 	
 curl -s http://localhost:8080/api/boards/{board_id}/posts \
