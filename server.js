@@ -5,14 +5,14 @@ Array.prototype.find = function(criteria, cb) {
 	var matches = this.filter(function(board) {
 		var matches = true;
 		for( var k in criteria ) {
-			if( board[k] == criteria[k] ) matches = false;
+			if( board[k] != criteria[k] ) matches = false;
 		}
 		return matches;
 	});
 	cb(!matches.length?"No matches.":null, matches);
 };
 
-var boards = [{user: 123}],
+var boards = [{user: 123, id: 123}],
 	users = [],
 	posts = [];
 
@@ -42,6 +42,19 @@ app.get({
 				success: !err, 
 				error: err,
 				boards: boards
+			}) + '\n');
+		});
+	}
+}).get({
+	path: /^\/api\/boards\/[^\/]+/,
+	cb: function(req, res) {
+		var parts = req.url.substr(1).split('/'),
+			board = parts[2];
+		boards.find({ id: board }, function(err, boards) {
+			res.end(JSON.stringify({
+				success: !err, 
+				error: err,
+				board: boards[0]
 			}) + '\n');
 		});
 	}
