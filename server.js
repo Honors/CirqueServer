@@ -17,7 +17,11 @@ Array.prototype.find = function(criteria, cb) {
 	var matches = this.filter(function(item) {
 		var matches = true;
 		for( var k in criteria ) {
-			if( item[k] != criteria[k] ) matches = false;
+			if( criteria[k] instanceof RegExp ) {
+				if( !item[k].match(criteria[k]) ) matches = false;
+			} else {
+				if( item[k] != criteria[k] ) matches = false;
+			}
 		}
 		return matches;
 	}).map(function(item, index) {
