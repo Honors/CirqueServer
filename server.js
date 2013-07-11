@@ -218,6 +218,19 @@ app.get({
 			});
 		});
 	}
+}).get({
+	path: /^\/api\/users\/[^\/]+\/invitations/,
+	cb: function(req, res) {
+		var parts = req.url.substr(1).split('/'),
+			user = parts[2];
+		invites.find({ to: user }, function(err, invites) {
+			res.end(JSON.stringify({
+				success: !err, 
+				error: err,
+				invites: invites
+			}) + '\n');
+		});
+	}
 });
 
 http.createServer(app).listen(8080);
