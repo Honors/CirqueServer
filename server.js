@@ -97,6 +97,21 @@ app.get({
 			});
 		});
 	}
+}).post({
+	path: /^\/api\/boards\/[^\/]+\/posts/,
+	cb: function(req, res) {
+		var parts = req.url.substr(1).split('/'),
+			board = parts[2];
+		readJSON(req, function(post) {
+			post.board = board;
+			posts.insert(post, function(err) {
+				res.end(JSON.stringify({
+					success: !err, 
+					error: err
+				}) + '\n');
+			});
+		});
+	}
 });
 
 http.createServer(app).listen(8080);

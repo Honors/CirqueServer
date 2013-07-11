@@ -30,7 +30,7 @@
 			\"location\": \"32.0,54.0\", \
 			\"name\": \"Birthday\", \
 			\"private\": false, \
-			\"members\": [123, 456], \
+			\"members\": [123, 456] \
 		}"	
 ```
 
@@ -42,7 +42,7 @@
 			\"user\": 123, \
 			\"type\": \"text\", \
 			\"embeds\": [], \
-			\"content\": "hello, world", \
+			\"content\": "hello, world" \
 		}"	
 ```
 

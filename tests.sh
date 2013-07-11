@@ -19,5 +19,5 @@ curl -s http://localhost:8080/api/boards/{board_id}/posts \
 		\"user\": 123, \
 		\"type\": \"text\", \
 		\"embeds\": [], \
-		\"content\": \"hello, world\", \
+		\"content\": \"hello, world\" \
 	}" | $assert "create post"
