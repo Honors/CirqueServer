@@ -1,8 +1,5 @@
 ##Get Token
-
-
-##Make Account
-
+1. TODO: An authorization mechanism.
 
 ##Get Boards for User
 
@@ -13,39 +10,57 @@
 ##Get a Given Board
 
 ```sh
-	curl http://localhost:8080/api/boards/{board_id}
+curl http://localhost:8080/api/boards/{board_id}
 ```
 
 ##Get Posts
 
 ```sh
-	curl http://localhost:8080/api/boards/{board_id}/posts
+curl http://localhost:8080/api/boards/{board_id}/posts
 ```
 
 ##Create Board
 
 ```sh
-	curl http://localhost:8080/api/boards \
-		-d "{
-			\"location\": \"32.0,54.0\", \
-			\"name\": \"Birthday\", \
-			\"private\": false, \
-			\"members\": [123, 456] \
-		}"	
+curl http://localhost:8080/api/boards \
+	-d "{
+		\"location\": \"32.0,54.0\", \
+		\"name\": \"Birthday\", \
+		\"private\": false, \
+		\"members\": [123, 456] \
+	}"	
 ```
 
 ##Create Post
 
 ```sh
-	curl http://localhost:8080/api/boards/{board_id}/posts \
-		-d "{
-			\"user\": 123, \
-			\"type\": \"text\", \
-			\"embeds\": [], \
-			\"content\": "hello, world" \
-		}"	
+curl http://localhost:8080/api/boards/{board_id}/posts \
+	-d "{
+		\"user\": 123, \
+		\"type\": \"text\", \
+		\"embeds\": [], \
+		\"content\": "hello, world" \
+	}"	
+```
+
+##Get User Location
+
+```sh
+curl http://localhost:8080/api/users/{user_id}/location
+```
+
+##Set User Location
+
+```sh
+curl http://localhost:8080/api/users/{user_id}/location \
+	-d "32.0,54.0"	
 ```
 
 ##Locate Users
+
+```sh
+curl http://localhost:8080/api/users/locate \
+	-d "32.0,54.0"	
+```
 
 ##Invite Users

@@ -21,3 +21,11 @@ curl -s http://localhost:8080/api/boards/{board_id}/posts \
 		\"embeds\": [], \
 		\"content\": \"hello, world\" \
 	}" | $assert "create post"
+	
+curl -s http://localhost:8080/api/users/123/location | $assert "get user location"
+
+curl -s http://localhost:8080/api/users/123/location \
+	-d "32.0,54.0" | $assert "set user location"
+	
+curl -s http://localhost:8080/api/users/locate \
+	-d "32.0,54.0" | $assert "locate users"

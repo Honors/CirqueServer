@@ -16,8 +16,8 @@ Array.prototype.insert = function(obj, cb) {
 	cb(this.indexOf(obj) == -1);
 };
 
-var boards = [{user: 123, id: 123}],
-	users = [{ id: 123, name: "matt3141" }],
+var boards = [{ user: 123, id: 123, location: "32.0,54.0" }],
+	users = [{ id: 123, name: "matt3141", location: "32.0,54.0" }],
 	posts = [{ id: 123, user: 123, board: 123 }];
 
 var readJSON = function(req, cb) {
