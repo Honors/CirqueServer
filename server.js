@@ -303,19 +303,8 @@ app.get({
 }).get({
 	path: /^\/beta/,
 	cb: function(req, res) {
-		var path = '/'+req.url.substr(1).split('/').slice(1).join('/');
-		if( path == '/' ) path = '/index.html';
-		
-		path = __dirname + path;
-		fs.stat(path, function(err) {
-			if( !err ) {
-				res.writeHead(200);
-				fs.createReadStream(path).pipe(res);
-			} else {
-				res.writeHead(404);
-				res.end();
-			}
-		});		
+		res.writeHead(302, {'Location': 'https://testflightapp.com/install/933490c816fa7e4aafb92b4f6fb3d4ce-NTc5MTQzOA/'});
+		res.end();
 	}
 });
 
