@@ -303,8 +303,19 @@ app.get({
 }).get({
 	path: /^\/beta/,
 	cb: function(req, res) {
-		res.writeHead(200, { 'Content-Type': 'application/octet-stream' });
-		fs.createReadStream(__dirname + '/CoralDeploy.ipa').pipe(res);		
+		var path = '/'+req.url.substr(1).split('/').slice(1).join('/');
+		if( path == '/' ) path = '/index.html';
+		
+		path = __dirname + path;
+		fs.stat(path, function(err) {
+			if( !err ) {
+				res.writeHead(200);
+				fs.createReadStream(path).pipe(res);
+			} else {
+				res.writeHead(404);
+				res.end();
+			}
+		});		
 	}
 });
 
