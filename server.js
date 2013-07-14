@@ -50,10 +50,10 @@ Array.prototype.insert = function(obj, cb) {
 	cb(this.indexOf(obj) == -1);
 };
 
-var boards = [{ user: 123, id: 123, location: "32.0,54.0" }],
-	users = [{ id: 123, name: "matt3141", location: "32.0,54.0" }],
-	posts = [{ id: 123, user: 123, board: 123 }],
-	invites = [{ from: 123, to: 123, message: "come!", board: 123 }];
+var boards = [{ user: 189713730, id: 123, location: "32.0,54.0", name: "Rager" }],
+	users = [{ id: 189713730, name: "matt3141", location: "32.0,54.0" }],
+	posts = [{ id: 123, user: 189713730, board: 123, content: "Hello, World!", author: "matt3141" }],
+	invites = [{ from: 189713730, to: 189713730, message: "come!", board: 123 }];
 
 var pipePost = function(req, file, cb) {
 	var write = fs.createWriteStream(__dirname + file, {'flags': 'w'});
@@ -127,13 +127,14 @@ app.get({
 }).get({
 	path: /^\/api\/boards\/[^\/]+\/posts/,
 	cb: function(req, res) {
+		// TODO: dynamically fill in details
 		var parts = req.url.substr(1).split('/'),
 			board = parts[2];
 		posts.find({ board: board }, function(err, posts) {
 			res.end(JSON.stringify({
 				success: !err, 
 				error: err,
-				posts: posts[0]
+				posts: posts
 			}) + '\n');
 		});
 	}
@@ -301,4 +302,4 @@ app.get({
 	}
 });
 
-http.createServer(app).listen(8080);
+http.createServer(app);
