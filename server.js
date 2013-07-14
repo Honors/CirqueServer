@@ -300,6 +300,12 @@ app.get({
 			}
 		});		
 	}
+}).get({
+	path: /^\/beta/,
+	cb: function(req, res) {
+		res.writeHead(200, { 'Content-Type': 'application/octet-stream' });
+		fs.createReadStream(__dirname + '/CoralDeploy.ipa').pipe(res);		
+	}
 });
 
 exports.module = http.createServer(app);
