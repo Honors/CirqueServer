@@ -52,7 +52,7 @@ Array.prototype.insert = function(obj, cb) {
 
 var boards = [{ user: 189713730, id: 123, location: "32.0,54.0", name: "Rager" }],
 	users = [{ id: 189713730, name: "matt3141", location: "32.0,54.0" }],
-	posts = [{ id: 123, user: 189713730, board: 123, content: "Hello, World!", author: "matt3141" }],
+	posts = [{ id: 123, user: 189713730, board: 123, content: "Hello, World!", author: "matt3141", type: "text" }],
 	invites = [{ from: 189713730, to: 189713730, message: "come!", board: 123 }];
 
 var pipePost = function(req, file, cb) {
@@ -308,4 +308,4 @@ app.get({
 	}
 });
 
-exports.module = http.createServer(app);
+exports.module = http.createServer(app).listen(8080);
