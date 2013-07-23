@@ -45,4 +45,4 @@ curl -s http://localhost:8080/api/users/189713730/invitations | $assert "Get Inv
 curl -s http://localhost:8080/api/assets/test.txt \
 	-d @test.txt | $assert "Upload an Asset" success=true
 
-curl -s http://localhost:8080/api/assets/test.txt | $assert "Get an Asset" success=true
+curl -s http://localhost:8080/api/assets/test.txt | $assert "Get an Asset" "#raw"
